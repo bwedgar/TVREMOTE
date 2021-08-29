@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="apple-touch-icon" href="launch.png">
+  <link rel="apple-touch-startup-image" href="launch.png">
+
+  <link rel="canonical" href="https://bwedgar.github.io/Bluetooth" />
+
+  <title>Bluetooth</title>
+  <meta name="apple-mobile-web-app-title" content="Bluetooth">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
+  <meta http-equiv="refresh" content="600">
+  <style>
+    .button1 {
+      background-color: black; //#4CAF50;
+      /* Green */
+      width: 20%;
+      border: 2px solid white;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      float: left;
+      border: 1px solid green;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    .button2 {
+      background-color: black; //#4CAF50;
+      /* Green */
+      width: 10%;
+      border: 2px solid white;
+      color: white;
+      padding: 15px 3px;
+      text-align: center;
+      text-decoration: none;
+      //  display: inline-block;
+      float: left;
+      border: 1px solid green;
+      font-size: 16px;
+    }
+
+    .button2On {
+
+      background-color: grey; //#4CAF50;
+      /* Green */
+      width: 10%;
+      border: 2px solid white;
+      color: black;
+      padding: 15px 3px;
+      text-align: center;
+      text-decoration: none;
+      //  display: inline-block;
+      float: left;
+      border: 1px solid green;
+      font-size: 16px;
+
+    }
+  </style>
+
+</head>
+
+<body style="background-color:black;color:red;font-family:courier;font-size:40px;text-align:center;>
+  <div style=" font-size:300px;border: 6px solid red;border-radius: 100px;margin:auto;width:75%">T</div>
+  <div><br>Bluetooth by <a style="color:red;" href="https://bwedgar.github.io">bwedgar</a></div>
+  <br>
+  <button id="find">find bluetooth MyESP32 6</button>
+  <BR>
+ 
+  <br style="clear:both" />
+
+  <button id="TV_on" class="button1">TV ON</button>
+   <button id="TV_off" class="button1">TV OFF</button>
+  <button id="quieter" class="button1">Quieter</button>
+  <button id="louder" class="button1">Louder</button>
+  <br style="clear:both" />
+
+  
+  <script>
+   
+
+    var myCharacteristic;
+        document.getElementById("TV_on").addEventListener('click', function() {
+      myCharacteristic.writeValue(new Uint8Array([0x42]))
+    });
+            document.getElementById("TV_off").addEventListener('click', function() {
+      myCharacteristic.writeValue(new Uint8Array([0x41]))
+    });
+    
+  
+    x.addEventListener('click', function(event) {
+
+      navigator.bluetooth.requestDevice({
+          filters: [{
+            namePrefix: 'MyESP32'
+          }],
+          optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
+        })
+        //  });
+
+
+
+        .then(function(device) {
+          // Step 2: Connect to it
+          console.log("connecting to device");
+          return device.gatt.connect();
+
+        })
+
+        .then(function(server) {
+          // Step 3: Get the Service
+          console.log("connecting to service");
+          return server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
+
+        })
+
+        .then(function(service) {
+          // Step 4: get the Characteristic
+          console.log("getting characteristic");
+          return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
+
+        })
+        .then(function(characteristic) {
+          myCharacteristic = characteristic;
+          // Step 5: Write to the characteristic
+          var data = new Uint8Array([0x01]);
+          console.log("writing to characteristic");
+
+          return characteristic.writeValue(data);
+        })
+        .catch(function(error) {
+          // And of course: error handling!
+          console.error('Connection failed!', error);
+        });
+
+
+    });
+  </script>
+
+</body>
+
+</html>
