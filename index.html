@@ -78,6 +78,7 @@
  
   <br style="clear:both" />
 
+     <button id="connect" class="button1">Connect</button>                    
   <button id="TV_on" class="button1">TV ON</button>
    <button id="TV_off" class="button1">TV OFF</button>
   <button id="quieter" class="button1">Quieter</button>
@@ -87,7 +88,7 @@
   
   <script>
    
-
+x=document.getElementById("connect");
     var myCharacteristic;
         document.getElementById("TV_on").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x42]))
