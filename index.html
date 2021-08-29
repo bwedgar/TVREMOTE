@@ -33,8 +33,7 @@
 
      <button id="connect" class="button1">Connect</button>  
                                          <BR>
-  <button id="TV_on" class="button1">TV ON</button>
-   <button id="TV_off" class="button1">TV OFF</button>
+  <button id="TV_on" class="button1">TV ON/OFF</button>
                                       <BR>
   <button id="quieter" class="button1">Quieter</button>
   <button id="louder" class="button1">Louder</button>
@@ -46,12 +45,14 @@
 x=document.getElementById("connect");
     var myCharacteristic;
         document.getElementById("TV_on").addEventListener('click', function() {
-      myCharacteristic.writeValue(new Uint8Array([0x42]))
-    });
-            document.getElementById("TV_off").addEventListener('click', function() {
       myCharacteristic.writeValue(new Uint8Array([0x41]))
     });
-    
+            document.getElementById("quieter").addEventListener('click', function() {
+      myCharacteristic.writeValue(new Uint8Array([0x42]))
+    });
+                document.getElementById("louder").addEventListener('click', function() {
+      myCharacteristic.writeValue(new Uint8Array([0x43]))
+    });
   
     x.addEventListener('click', function(event) {
 
